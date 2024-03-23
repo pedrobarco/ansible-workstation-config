@@ -1,0 +1,4 @@
+---
+roles:
+  - name: mariuskimmina.dotfiles
+    src: https://github.com/mariuskimmina/ansible-role-dotfiles
