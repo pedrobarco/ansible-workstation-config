@@ -1,0 +1,8 @@
+---
+- name: Install dotfiles
+  include_role:
+    name: mariuskimmina.dotfiles
+  vars:
+    dotfiles_repo: "https://github.com/pedrobarco/dotfiles.git"
+    dotfiles_repo_version: master
+    dotfiles_repo_local_destination: "{{ ansible_env.HOME }}/repos/pedrobarco/dotfiles"

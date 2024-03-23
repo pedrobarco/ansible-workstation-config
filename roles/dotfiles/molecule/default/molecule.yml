@@ -5,5 +5,3 @@ platforms:
   - name: instance
     image: geerlingguy/docker-ubuntu2204-ansible:latest
     pre_build_image: true
-    groups:
-      - workstations
