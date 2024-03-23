@@ -1,0 +1,21 @@
+---
+- name: shell | install packages (apt)
+  package:
+    name:
+      - zsh
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: shell | install packages (brew)
+  include_role:
+    name: geerlingguy.mac.homebrew
+  vars:
+    homebrew_installed_packages:
+      - zsh
+      - bash
+  when: ansible_os_family == 'Darwin'
+
+- name: shell | set default shell to zsh
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
