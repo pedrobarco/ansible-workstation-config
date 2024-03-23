@@ -1,0 +1,20 @@
+---
+- name: tmux | install tmux (apt)
+  package:
+    name:
+      - tmux
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: tmux | install tmux (brew)
+  include_role:
+    name: geerlingguy.mac.homebrew
+  vars:
+    homebrew_installed_packages:
+      - tmux
+  when: ansible_os_family == 'Darwin'
+
+- name: tmux | install tpm (git)
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
