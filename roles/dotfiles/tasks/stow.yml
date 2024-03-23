@@ -1,5 +1,5 @@
 ---
-- name: Install dotfiles
+- name: stow | clone + setup dotfiles
   include_role:
     name: mariuskimmina.dotfiles
   vars:

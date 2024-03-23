@@ -1,19 +1,54 @@
 ---
-- name: shell | install packages (apt)
+- name: shell | install zsh (apt)
   package:
     name:
       - zsh
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: shell | install packages (brew)
+- name: shell | install zsh (brew)
   include_role:
     name: geerlingguy.mac.homebrew
   vars:
     homebrew_installed_packages:
       - zsh
-      - bash
   when: ansible_os_family == 'Darwin'
+
+- name: shell | install antidote (git)
+  git:
+    repo: https://github.com/mattmc3/antidote.git
+    dest: "{{ ansible_env.HOME }}/.antidote"
+    depth: 1
+
+- block:
+    - name: shell | install starship dependencies (apt)
+      package:
+        name:
+          - curl
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: shell | check if starship is already installed
+      stat:
+        path: /usr/local/bin/starship
+      register: installed
+
+    - name: shell | download starship installer
+      get_url:
+        url: https://starship.rs/install.sh
+        dest: /tmp/starship-installer.sh
+        mode: "u+rwx"
+      when: not installed.stat.exists
+      register: download
+
+    - name: shell | run the starship install script
+      shell: /tmp/starship-installer.sh --yes
+      when: download.changed
+
+    - name: shell | remove the starship installer
+      file:
+        path: /tmp/starship-installer.sh
+        state: absent
 
 - name: shell | set default shell to zsh
   user:

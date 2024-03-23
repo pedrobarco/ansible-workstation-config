@@ -1,4 +1,4 @@
 ---
 - include_tasks: repositories.yml
-- include_tasks: dotfiles.yml
+- include_tasks: stow.yml
 - include_tasks: shell.yml
