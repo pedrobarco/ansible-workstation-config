@@ -1,16 +1,10 @@
 ---
-# - name: nvim | install nvim dependencies (apt)
-#   package:
-#     name: []
-#     state: present
-#   when: ansible_os_family == 'Debian'
-
-- name: nvim | check if nvim is already installed
+- name: nvim | check if already installed
   stat:
     path: /usr/local/bin/nvim
   register: installed
 
-- name: nvim | download nvim
+- name: nvim | download latest from github
   quera.github.install_from_github:
     repo: neovim/neovim
     asset_regex: nvim-.*\.tar\.gz

@@ -1,0 +1,6 @@
+---
+- name: antidote | install package (git)
+  git:
+    repo: https://github.com/mattmc3/antidote.git
+    dest: "{{ ansible_env.HOME }}/.antidote"
+    depth: 1

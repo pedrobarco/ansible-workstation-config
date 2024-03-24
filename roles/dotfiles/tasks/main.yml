@@ -1,6 +1,13 @@
 ---
-- include_tasks: repositories.yml
-- include_tasks: stow.yml
-- include_tasks: shell.yml
-- include_tasks: tmux.yml
+# install packages
+- include_tasks: packages.yml
+- include_tasks: antidote.yml
 - include_tasks: nvim.yml
+- include_tasks: starship.yml
+- include_tasks: tpm.yml
+# setup fdfind symlink
+- include_tasks: fd.yml
+# link dotfiles using stow
+- include_tasks: dotfiles.yml
+# setup shell environment
+- include_tasks: shell.yml

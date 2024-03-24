@@ -1,0 +1,5 @@
+---
+- name: tmp | install package (git)
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
