@@ -1,12 +1,12 @@
 ---
-- name: packages | update and upgrade packages (apt)
+- name: common | update and upgrade packages (apt)
   apt:
     update_cache: yes
     upgrade: yes
     autoremove: yes
   when: ansible_pkg_mgr == 'apt'
 
-- name: packages | install common packages (apt)
+- name: common | install packages (apt)
   package:
     name:
       - curl
@@ -21,7 +21,7 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: packages | install common packages (brew)
+- name: common | install packages (brew)
   include_role:
     name: geerlingguy.mac.homebrew
   vars:
