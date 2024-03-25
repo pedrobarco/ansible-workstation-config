@@ -1,0 +1,8 @@
+---
+# link dotfiles
+- include_tasks: dotfiles.yml
+# install packages
+- include_tasks: packages.yml
+# setup default shell
+- include_tasks: shell.yml
+# setup fonts

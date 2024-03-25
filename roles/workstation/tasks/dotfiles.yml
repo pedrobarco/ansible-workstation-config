@@ -1,5 +1,5 @@
 ---
-- name: stow | clone and link dotfiles
+- name: dotfiles | clone and link dotfiles
   include_role:
     name: mariuskimmina.dotfiles
   vars:

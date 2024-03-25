@@ -1,0 +1,46 @@
+---
+- name: packages | update and upgrade packages (apt)
+  apt:
+    update_cache: yes
+    upgrade: yes
+    autoremove: yes
+  when: ansible_pkg_mgr == 'apt'
+
+- name: packages | install linuxbrew
+  include_role:
+    name: markosamuli.linuxbrew
+  vars:
+    linuxbrew_use_installer: true
+    linuxbrew_init_shell: false
+  when: ansible_os_family == 'Debian'
+
+- name: packages | install brew
+  include_role:
+    name: geerlingguy.mac.homebrew
+  when: ansible_os_family == 'Darwin'
+
+- name: packages | install packages (brew)
+  community.general.homebrew:
+    name:
+      - antidote
+      - bazelisk
+      - coreutils
+      - curl
+      - fd
+      - fzy
+      - git
+      - go
+      - jq
+      - krew
+      - kubectl
+      - neovim
+      - pre-commit
+      - python3
+      - ripgrep
+      - starship
+      - stow
+      - tmux
+      - tpm
+      - zip
+      - zsh
+    state: present

@@ -1,0 +1,6 @@
+---
+- name: shell | set default shell to zsh
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: "/home/linuxbrew/.linuxbrew/bin/zsh"
+    when: ansible_os_family == 'Debian'
