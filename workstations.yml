@@ -1,4 +1,4 @@
 ---
 - hosts: workstations
   roles:
-    - role: mariuskimmina.dotfiles
+    - role: workstation
