@@ -3,4 +3,5 @@
   user:
     name: "{{ ansible_user_id }}"
     shell: "/home/linuxbrew/.linuxbrew/bin/zsh"
-    when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian'
+  become: true
