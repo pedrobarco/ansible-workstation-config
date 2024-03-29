@@ -30,10 +30,13 @@
       - fzy
       - git
       - go
+      - ibazel
+      - rustup-init
       - jq
       - krew
       - kubectl
       - neovim
+      - node
       - pre-commit
       - python3
       - ripgrep
