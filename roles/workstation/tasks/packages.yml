@@ -1,12 +1,12 @@
 ---
-- name: packages | update and upgrade packages (apt)
+- name: update apt cache
   apt:
     update_cache: true
     cache_valid_time: 3600
   when: ansible_pkg_mgr == 'apt'
   become: true
 
-- name: packages | install linuxbrew
+- name: install linuxbrew
   include_role:
     name: markosamuli.linuxbrew
   vars:
@@ -14,15 +14,16 @@
     linuxbrew_init_shell: false
   when: ansible_os_family == 'Debian'
 
-- name: packages | install brew
+- name: install brew
   include_role:
     name: geerlingguy.mac.homebrew
   when: ansible_os_family == 'Darwin'
 
-- name: packages | install packages (brew)
+- name: install brew packages
   community.general.homebrew:
     name:
       - antidote
+      - bash
       - bazelisk
       - coreutils
       - curl
@@ -46,4 +47,33 @@
       - tpm
       - zip
       - zsh
-    state: present
+      - xclip
+      - minikube
+
+- name: install krew plugins
+  vars:
+    plugins:
+      - ctx
+      - ns
+      - print-env
+  environment:
+    PATH: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.HOME }}/.krew/bin:{{ ansible_env.PATH }}"
+  block:
+    - name: check if krew default index dir exists
+      stat:
+        path: "{{ ansible_env.HOME }}/.krew/index/default"
+      register: krew_index
+
+    - name: update krew index
+      command: kubectl krew update
+      when: not krew_index.stat.exists
+
+    - name: get list of installed plugins
+      shell: kubectl krew list | cut -f1
+      register: installed_plugins
+      changed_when: false
+      ignore_errors: true
+
+    - name: install krew plugins
+      command: "kubectl krew install {{ plugins | difference(installed_plugins.stdout_lines) | join(' ') }}"
+      when: plugins | difference(installed_plugins.stdout_lines) | length > 0
