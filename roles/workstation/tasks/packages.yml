@@ -49,6 +49,7 @@
       - zsh
       - xclip
       - minikube
+      - docker
 
 - name: install krew plugins
   vars:
