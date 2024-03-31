@@ -1,0 +1,20 @@
+---
+- name: update apt cache
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_pkg_mgr == 'apt'
+  become: true
+
+- name: install linuxbrew
+  include_role:
+    name: markosamuli.linuxbrew
+  vars:
+    linuxbrew_use_installer: true
+    linuxbrew_init_shell: false
+  when: ansible_os_family == 'Debian'
+
+- name: install brew
+  include_role:
+    name: geerlingguy.mac.homebrew
+  when: ansible_os_family == 'Darwin'
