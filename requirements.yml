@@ -1,6 +1,5 @@
 ---
 collections:
-  - name: git+https://github.com/QueraTeam/ansible-github.git
   - name: geerlingguy.mac
 
 roles:

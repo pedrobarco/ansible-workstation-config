@@ -3,8 +3,5 @@
 - include_tasks: brew.yml
 # install packages
 - include_tasks: packages.yml
-# link dotfiles
-- include_tasks: dotfiles.yml
 # setup default shell
 - include_tasks: shell.yml
-# setup fonts
