@@ -5,5 +5,5 @@
     dotfiles_repo_version: master
     dotfiles_repo_local_destination: "{{ ansible_env.HOME }}/repos/pedrobarco/dotfiles"
   roles:
-    - role: workstation
+    - role: dev
     - role: mariuskimmina.dotfiles
