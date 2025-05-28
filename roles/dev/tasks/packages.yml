@@ -1,5 +1,5 @@
 ---
-- name: install brew packages
+- name: install brew formulae
   community.general.homebrew:
     name:
       # core
@@ -69,3 +69,12 @@
     - name: install krew plugins
       command: "kubectl krew install {{ plugins | difference(installed_plugins.stdout_lines) | join(' ') }}"
       when: plugins | difference(installed_plugins.stdout_lines) | length > 0
+
+- name: install brew casks
+  community.general.homebrew_cask:
+    name:
+      - rectangle
+      - postman
+      - wezterm
+      - scroll-reverser
+  when: ansible_os_family == 'Darwin'
