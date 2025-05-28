@@ -2,34 +2,45 @@
 - name: install brew packages
   community.general.homebrew:
     name:
-      - antidote
+      # core
       - bash
-      - bazelisk
       - coreutils
       - curl
-      - fd
-      - fzy
       - git
-      - go
-      - ibazel
-      - rustup-init
-      - jq
-      - krew
-      - kubectl
-      - neovim
-      - node
-      - pre-commit
-      - python3
-      - ripgrep
-      - starship
       - stow
-      - tmux
-      - tpm
+      - xclip
       - zip
       - zsh
-      - xclip
-      - minikube
+      # shell
+      - antidote
+      - starship
+      # toolchains
+      - bazelisk
+      - go
+      - kcl
+      - node
+      - python3
+      - rustup
+      - terraform
+      # neovim
+      - fd
+      - fzy
+      - neovim
+      - ripgrep
+      # tmux
+      - tmux
+      - tpm
+      # dev
+      - buildozer
+      - ibazel
+      - jq
+      - pre-commit
+      - yq
+      # containers
       - docker
+      - krew
+      - kubectl
+      - minikube
 
 - name: install krew plugins
   vars:
