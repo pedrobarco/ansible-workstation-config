@@ -1,4 +1,10 @@
 ---
+- name: install brew taps
+  community.general.homebrew_tap:
+    name: "{{ item }}"
+  loop:
+    - kcl-lang/tap
+
 - name: install brew formulae
   community.general.homebrew:
     name:
@@ -73,8 +79,8 @@
 - name: install brew casks
   community.general.homebrew_cask:
     name:
-      - rectangle
       - postman
-      - wezterm
+      - rectangle
       - scroll-reverser
+      - wezterm
   when: ansible_os_family == 'Darwin'
