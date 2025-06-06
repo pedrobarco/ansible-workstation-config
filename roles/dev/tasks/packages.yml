@@ -4,6 +4,7 @@
     name: "{{ item }}"
   loop:
     - kcl-lang/tap
+    - homebrew/cask-fonts
 
 - name: install brew formulae
   community.general.homebrew:
@@ -79,6 +80,8 @@
 - name: install brew casks
   community.general.homebrew_cask:
     name:
+      - font-jetbrains-mono-nerd-font
+      - font-space-mono-nerd-font
       - localsend
       - postman
       - rectangle
