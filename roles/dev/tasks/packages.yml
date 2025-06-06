@@ -79,8 +79,10 @@
 - name: install brew casks
   community.general.homebrew_cask:
     name:
+      - localsend
       - postman
       - rectangle
       - scroll-reverser
+      - vlc
       - wezterm
   when: ansible_os_family == 'Darwin'
