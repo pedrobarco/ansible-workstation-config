@@ -88,4 +88,5 @@
       - scroll-reverser
       - vlc
       - wezterm
+      - transmission
   when: ansible_os_family == 'Darwin'
