@@ -7,12 +7,42 @@
   become: true
 
 - name: install linuxbrew
-  ansible.builtin.include_role:
-    name: markosamuli.linuxbrew
-  vars:
-    linuxbrew_use_installer: true
-    linuxbrew_init_shell: false
   when: ansible_facts["os_family"] == 'Debian'
+  block:
+    - name: check if linuxbrew is installed
+      ansible.builtin.stat:
+        path: /home/linuxbrew/.linuxbrew/bin/brew
+      register: linuxbrew_check
+
+    - name: install linuxbrew via official installer
+      when: not linuxbrew_check.stat.exists
+      become: true
+      block:
+        - name: install linuxbrew dependencies
+          ansible.builtin.apt:
+            name:
+              - build-essential
+              - curl
+              - file
+              - git
+              - procps
+            state: present
+
+        - name: download homebrew installer
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+            dest: /tmp/homebrew-install.sh
+            mode: "0755"
+
+        - name: run homebrew installer
+          ansible.builtin.command: /bin/bash /tmp/homebrew-install.sh
+          environment:
+            NONINTERACTIVE: "1"
+
+        - name: remove installer script
+          ansible.builtin.file:
+            path: /tmp/homebrew-install.sh
+            state: absent
 
 - name: install brew
   ansible.builtin.include_role:

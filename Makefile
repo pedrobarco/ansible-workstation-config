@@ -3,9 +3,14 @@ install:
 	@ansible-galaxy install -r requirements.yml
 
 .PHONY: dry-run
-dry-run:
-	@ansible-playbook -i hosts --ask-become-pass --check main.yml
+dry-run: install
+	@ansible-playbook -i hosts.yml --ask-become-pass --check main.yml
 
 .PHONY: run
-run:
-	@ansible-playbook -i hosts --ask-become-pass main.yml
+run: install
+	@ansible-playbook -i hosts.yml --ask-become-pass main.yml
+
+.PHONY: test
+test:
+	@ansible-galaxy collection install -r roles/dev/molecule/default/collections.yml -p ~/.ansible/collections
+	@cd roles/dev && molecule test

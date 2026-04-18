@@ -6,6 +6,7 @@ dotfiles_repo_local_destination: "{{ ansible_facts['env']['HOME'] }}/repos/pedro
 dotfiles_home: "{{ ansible_facts['env']['HOME'] }}"
 
 brew_taps:
+  - hashicorp/tap
   - kcl-lang/tap
 
 brew_formulae:
@@ -28,7 +29,7 @@ brew_formulae:
   - node
   - python@3.13
   - rustup
-  - terraform
+  - hashicorp/tap/terraform
   # neovim
   - fd
   - fzy
@@ -40,12 +41,13 @@ brew_formulae:
   - tpm
   # dev
   - ansible
+  - ansible-lint
   - buildozer
+  - molecule
   - ibazel
   - jq
   - nmap
   - pre-commit
-  - telnet
   - yq
   # media
   - mpv
@@ -55,6 +57,9 @@ brew_formulae:
   - kubernetes-cli
   - kustomize
   - minikube
+
+brew_formulae_darwin:
+  - telnet
 
 brew_casks:
   - alt-tab

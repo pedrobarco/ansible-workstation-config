@@ -1,22 +1,26 @@
 ---
-- name: ensure dotfiles repository is cloned locally
-  ansible.builtin.git:
-    repo: "{{ dotfiles_repo }}"
-    dest: "{{ dotfiles_repo_local_destination }}"
-    version: "{{ dotfiles_repo_version }}"
-    accept_hostkey: "{{ dotfiles_repo_accept_hostkey }}"
-
-- name: build directories list
-  ansible.builtin.find:
-    paths: ["{{ dotfiles_repo_local_destination }}"]
-    recurse: false
-    file_type: directory
-  register: dotfiles_dirs
-
 - name: deploy dotfiles
-  ansible.builtin.command:
-    cmd: "stow --target={{ dotfiles_home }} {{ item.path | basename }} --verbose=2"
-    chdir: "{{ dotfiles_repo_local_destination }}"
-  loop: "{{ dotfiles_dirs.files }}"
-  register: result
-  changed_when: 'result.stderr is search("LINK: ")'
+  environment:
+    PATH: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_facts['env']['PATH'] }}"
+  block:
+    - name: ensure dotfiles repository is cloned locally
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_repo_local_destination }}"
+        version: "{{ dotfiles_repo_version }}"
+        accept_hostkey: "{{ dotfiles_repo_accept_hostkey }}"
+
+    - name: build directories list
+      ansible.builtin.find:
+        paths: ["{{ dotfiles_repo_local_destination }}"]
+        recurse: false
+        file_type: directory
+      register: dotfiles_dirs
+
+    - name: stow dotfiles
+      ansible.builtin.command:
+        cmd: "stow --target='{{ dotfiles_home }}' {{ item.path | basename }} --verbose=2"
+        chdir: "{{ dotfiles_repo_local_destination }}"
+      loop: "{{ dotfiles_dirs.files }}"
+      register: result
+      changed_when: 'result.stderr is search("LINK: ")'

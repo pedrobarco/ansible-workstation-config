@@ -8,9 +8,15 @@
   community.general.homebrew:
     name: "{{ brew_formulae }}"
 
+- name: install brew formulae (macOS only)
+  community.general.homebrew:
+    name: "{{ brew_formulae_darwin }}"
+  when: ansible_facts["os_family"] == 'Darwin'
+
 - name: install krew plugins
   environment:
     PATH: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_facts['env']['HOME'] }}/.krew/bin:{{ ansible_facts['env']['PATH'] }}"
+  ignore_errors: true
   block:
     - name: check if krew default index dir exists
       ansible.builtin.stat:
@@ -25,7 +31,6 @@
       ansible.builtin.shell: kubectl krew list | cut -f1
       register: installed_plugins
       changed_when: false
-      ignore_errors: true
 
     - name: install krew plugins
       ansible.builtin.command: "kubectl krew install {{ krew_plugins | difference(installed_plugins.stdout_lines) | join(' ') }}"
