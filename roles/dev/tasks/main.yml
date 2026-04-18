@@ -1,7 +1,9 @@
 ---
 # install brew
-- include_tasks: brew.yml
+- ansible.builtin.include_tasks: brew.yml
 # install packages
-- include_tasks: packages.yml
+- ansible.builtin.include_tasks: packages.yml
 # setup default shell
-- include_tasks: shell.yml
+- ansible.builtin.include_tasks: shell.yml
+# deploy dotfiles
+- ansible.builtin.include_tasks: dotfiles.yml

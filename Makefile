@@ -4,8 +4,8 @@ install:
 
 .PHONY: dry-run
 dry-run:
-	@ansible-playbook --inventory-file=hosts --ask-become-pass --check main.yml
+	@ansible-playbook -i hosts --ask-become-pass --check main.yml
 
 .PHONY: run
 run:
-	@ansible-playbook --inventory-file=hosts --ask-become-pass main.yml
+	@ansible-playbook -i hosts --ask-become-pass main.yml

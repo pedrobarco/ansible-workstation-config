@@ -3,6 +3,4 @@ collections:
   - name: geerlingguy.mac
 
 roles:
-  - name: mariuskimmina.dotfiles
-    src: https://github.com/mariuskimmina/ansible-role-dotfiles
   - name: markosamuli.linuxbrew

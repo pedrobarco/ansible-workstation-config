@@ -1,0 +1,75 @@
+---
+dotfiles_repo: "https://github.com/pedrobarco/dotfiles.git"
+dotfiles_repo_version: master
+dotfiles_repo_accept_hostkey: false
+dotfiles_repo_local_destination: "{{ ansible_facts['env']['HOME'] }}/repos/pedrobarco/dotfiles"
+dotfiles_home: "{{ ansible_facts['env']['HOME'] }}"
+
+brew_taps:
+  - kcl-lang/tap
+
+brew_formulae:
+  # core
+  - bash
+  - coreutils
+  - curl
+  - git
+  - stow
+  - xclip
+  - zip
+  - zsh
+  # shell
+  - antidote
+  - starship
+  # toolchains
+  - bazelisk
+  - go
+  - kcl
+  - node
+  - python@3.13
+  - rustup
+  - terraform
+  # neovim
+  - fd
+  - fzy
+  - neovim
+  - ripgrep
+  - tree-sitter-cli
+  # tmux
+  - tmux
+  - tpm
+  # dev
+  - ansible
+  - buildozer
+  - ibazel
+  - jq
+  - nmap
+  - pre-commit
+  - telnet
+  - yq
+  # media
+  - mpv
+  # containers
+  - docker
+  - krew
+  - kubernetes-cli
+  - kustomize
+  - minikube
+
+brew_casks:
+  - alt-tab
+  - docker-desktop
+  - font-jetbrains-mono-nerd-font
+  - font-space-mono-nerd-font
+  - localsend
+  - postman
+  - rectangle
+  - scroll-reverser
+  - stremio
+  - transmission
+  - wezterm
+
+krew_plugins:
+  - ctx
+  - ns
+  - print-env
