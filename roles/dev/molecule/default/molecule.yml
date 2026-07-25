@@ -8,8 +8,9 @@ driver:
   name: docker
 
 platforms:
+  # Pinned by digest for reproducibility: this image only publishes :latest.
   - name: instance
-    image: geerlingguy/docker-ubuntu2404-ansible:latest
+    image: geerlingguy/docker-ubuntu2404-ansible@sha256:c8e6d58ab71b6935cec8da276648f1f4a8af818d322f6e8b6c5f7bbebc1c4640
     pre_build_image: true
 
 provisioner:
