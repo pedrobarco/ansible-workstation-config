@@ -48,9 +48,11 @@ dev_brew_formulae:
   - ripgrep
   - tree-sitter-cli
   # tmux
+  - fzf
   - herdr
   - tmux
   - tpm
+  - worktrunk
   # dev
   - ansible
   - ansible-lint
@@ -92,10 +94,12 @@ dev_krew_plugins:
   - ns
   - print-env
 
-# herdr plugins installed via `herdr plugin install <owner>/<repo>`; the plugin
-# id (used for idempotency and keybindings) is the repo basename.
+# herdr plugins installed via `herdr plugin install <repo>`. `id` is the plugin
+# id from the repo's manifest (used for idempotency and keybindings); it usually
+# matches the repo basename but not always (e.g. herdr-worktrunk -> worktrunk).
 dev_herdr_plugins:
-  - paulbkim-dev/vim-herdr-navigation
+  - { repo: paulbkim-dev/vim-herdr-navigation, id: vim-herdr-navigation }
+  - { repo: pedrobarco/herdr-worktrunk, id: worktrunk }
 
 dev_npm_global_packages:
   - name: "@augmentcode/auggie"
