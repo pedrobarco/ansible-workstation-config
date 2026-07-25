@@ -1,0 +1,25 @@
+---
+- name: Configure herdr plugins
+  environment:
+    PATH: "{{ dev_brew_path_env }}"
+  block:
+    - name: Get list of installed herdr plugins
+      ansible.builtin.command: herdr plugin list --json
+      register: dev_herdr_plugin_list
+      changed_when: false
+
+    - name: Build installed github plugin ids list
+      ansible.builtin.set_fact:
+        dev_herdr_installed_ids: >-
+          {{ (dev_herdr_plugin_list.stdout | from_json).result.plugins
+             | selectattr('source.kind', 'equalto', 'github')
+             | map(attribute='plugin_id') | list }}
+
+    # `herdr plugin install` takes GitHub shorthand and derives the plugin id
+    # from the repo's manifest; the repo basename matches that id, so we gate on
+    # it to stay idempotent and avoid re-cloning on every run.
+    - name: Install herdr plugins
+      ansible.builtin.command: "herdr plugin install {{ item }} --yes"
+      loop: "{{ dev_herdr_plugins }}"
+      when: (item | basename) not in dev_herdr_installed_ids
+      changed_when: true

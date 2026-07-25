@@ -1,0 +1,11 @@
+---
+- name: Install npm global packages
+  environment:
+    PATH: "{{ dev_brew_path_env }}"
+  community.general.npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    global: true
+  loop: "{{ dev_npm_global_packages }}"
+  loop_control:
+    label: "{{ item.name }}"

@@ -1,0 +1,23 @@
+---
+- name: Install brew taps
+  environment: "{{ dev_brew_env }}"
+  community.general.homebrew_tap:
+    name: "{{ item }}"
+  loop: "{{ dev_brew_taps }}"
+
+- name: Install brew formulae
+  environment: "{{ dev_brew_env }}"
+  community.general.homebrew:
+    name: "{{ dev_brew_formulae }}"
+
+- name: Install brew formulae (macOS only)
+  environment: "{{ dev_brew_env }}"
+  community.general.homebrew:
+    name: "{{ dev_brew_formulae_darwin }}"
+  when: ansible_facts["os_family"] == 'Darwin'
+
+- name: Install brew casks
+  environment: "{{ dev_brew_env }}"
+  community.general.homebrew_cask:
+    name: "{{ dev_brew_casks }}"
+  when: ansible_facts["os_family"] == 'Darwin'

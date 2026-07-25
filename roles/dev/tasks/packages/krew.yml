@@ -1,0 +1,22 @@
+---
+- name: Install krew plugins
+  environment:
+    PATH: "{{ ansible_facts['env']['HOME'] }}/.krew/bin:{{ dev_brew_path_env }}"
+  block:
+    # Run unconditionally: idempotent, and initializes the index so the
+    # subsequent 'krew list' doesn't fail on a fresh machine.
+    - name: Update krew index
+      ansible.builtin.command: kubectl krew update
+      changed_when: false
+
+    - name: Get list of installed plugins
+      ansible.builtin.shell:
+        cmd: set -o pipefail && kubectl krew list | cut -f1
+        executable: /bin/bash
+      register: dev_installed_plugins
+      changed_when: false
+
+    - name: Install krew plugins
+      ansible.builtin.command: "kubectl krew install {{ dev_krew_plugins | difference(dev_installed_plugins.stdout_lines) | join(' ') }}"
+      when: dev_krew_plugins | difference(dev_installed_plugins.stdout_lines) | length > 0
+      changed_when: true

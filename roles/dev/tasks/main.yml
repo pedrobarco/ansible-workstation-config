@@ -2,8 +2,17 @@
 - name: Install Homebrew
   ansible.builtin.include_tasks: brew.yml
 
-- name: Install packages
-  ansible.builtin.include_tasks: packages.yml
+- name: Install brew packages
+  ansible.builtin.include_tasks: packages/brew.yml
+
+- name: Install npm packages
+  ansible.builtin.include_tasks: packages/npm.yml
+
+- name: Install krew plugins
+  ansible.builtin.include_tasks: packages/krew.yml
+
+- name: Install herdr plugins
+  ansible.builtin.include_tasks: packages/herdr.yml
 
 - name: Configure default shell
   ansible.builtin.include_tasks: shell.yml

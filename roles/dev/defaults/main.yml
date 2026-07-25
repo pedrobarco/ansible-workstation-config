@@ -48,6 +48,7 @@ dev_brew_formulae:
   - ripgrep
   - tree-sitter-cli
   # tmux
+  - herdr
   - tmux
   - tpm
   # dev
@@ -90,6 +91,11 @@ dev_krew_plugins:
   - ctx
   - ns
   - print-env
+
+# herdr plugins installed via `herdr plugin install <owner>/<repo>`; the plugin
+# id (used for idempotency and keybindings) is the repo basename.
+dev_herdr_plugins:
+  - paulbkim-dev/vim-herdr-navigation
 
 dev_npm_global_packages:
   - name: "@augmentcode/auggie"
