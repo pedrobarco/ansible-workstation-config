@@ -58,6 +58,7 @@ dev_brew_formulae:
   - ibazel
   - jq
   - nmap
+  - opencode
   - pre-commit
   - yq
   # media
