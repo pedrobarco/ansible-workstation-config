@@ -20,10 +20,11 @@ It manages:
 Package variables intentionally use two shapes, matching what each underlying
 module expects:
 
-- `brew_taps`, `brew_formulae`, `brew_casks`, `krew_plugins` are lists of
-  strings. The Homebrew modules install a whole list in a single transaction,
-  and Homebrew discourages version pinning, so plain names are idiomatic.
-- `npm_global_packages` is a list of dicts with `name` and an optional
+- `dev_brew_taps`, `dev_brew_formulae`, `dev_brew_casks`, `dev_krew_plugins`
+  are lists of strings. The Homebrew modules install a whole list in a single
+  transaction, and Homebrew discourages version pinning, so plain names are
+  idiomatic.
+- `dev_npm_global_packages` is a list of dicts with `name` and an optional
   `version`, because `community.general.npm` takes name and version as separate
   parameters and per-package pinning is useful there.
 
@@ -61,11 +62,11 @@ Packages and configuration are declared in
 [`roles/dev/defaults/main.yml`](roles/dev/defaults/main.yml):
 
 ```yaml
-brew_formulae:
+dev_brew_formulae:
   - git
   - node
 
-npm_global_packages:
+dev_npm_global_packages:
   - name: "@augmentcode/auggie"
   - name: augment-open-proxy
     version: 1.0.3
