@@ -19,7 +19,7 @@
 
     - name: Stow dotfiles
       ansible.builtin.command:
-        cmd: "stow --target='{{ dev_dotfiles_home }}' {{ item.path | basename }} --verbose=2"
+        cmd: "stow --no-folding --target='{{ dev_dotfiles_home }}' {{ item.path | basename }} --verbose=2"
         chdir: "{{ dev_dotfiles_repo_local_destination }}"
       loop: "{{ dev_dotfiles_dirs.files }}"
       register: dev_stow_result
