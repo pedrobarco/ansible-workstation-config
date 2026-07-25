@@ -1,5 +1,5 @@
 ---
-- name: set default shell to zsh
+- name: Set default shell to zsh
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
     shell: "/home/linuxbrew/.linuxbrew/bin/zsh"

@@ -1,24 +1,24 @@
 ---
-- name: update apt cache
+- name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
   when: ansible_facts["pkg_mgr"] == 'apt'
   become: true
 
-- name: install linuxbrew
+- name: Install linuxbrew
   when: ansible_facts["os_family"] == 'Debian'
   block:
-    - name: check if linuxbrew is installed
+    - name: Check if linuxbrew is installed
       ansible.builtin.stat:
         path: /home/linuxbrew/.linuxbrew/bin/brew
-      register: linuxbrew_check
+      register: dev_linuxbrew_check
 
-    - name: install linuxbrew via official installer
-      when: not linuxbrew_check.stat.exists
+    - name: Install linuxbrew via official installer
+      when: not dev_linuxbrew_check.stat.exists
       become: true
       block:
-        - name: install linuxbrew dependencies
+        - name: Install linuxbrew dependencies
           ansible.builtin.apt:
             name:
               - build-essential
@@ -28,23 +28,24 @@
               - procps
             state: present
 
-        - name: download homebrew installer
+        - name: Download homebrew installer
           ansible.builtin.get_url:
             url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
             dest: /tmp/homebrew-install.sh
             mode: "0755"
 
-        - name: run homebrew installer
+        - name: Run homebrew installer
           ansible.builtin.command: /bin/bash /tmp/homebrew-install.sh
           environment:
             NONINTERACTIVE: "1"
+          changed_when: true
 
-        - name: remove installer script
+        - name: Remove installer script
           ansible.builtin.file:
             path: /tmp/homebrew-install.sh
             state: absent
 
-- name: install brew
+- name: Install brew
   ansible.builtin.include_role:
     name: geerlingguy.mac.homebrew
   when: ansible_facts["os_family"] == 'Darwin'

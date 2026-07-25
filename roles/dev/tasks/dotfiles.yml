@@ -1,26 +1,27 @@
 ---
-- name: deploy dotfiles
+- name: Deploy dotfiles
   environment:
-    PATH: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_facts['env']['PATH'] }}"
+    PATH: "{{ dev_brew_path_env }}"
   block:
-    - name: ensure dotfiles repository is cloned locally
+    - name: Ensure dotfiles repository is cloned locally
       ansible.builtin.git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ dotfiles_repo_local_destination }}"
-        version: "{{ dotfiles_repo_version }}"
-        accept_hostkey: "{{ dotfiles_repo_accept_hostkey }}"
+        repo: "{{ dev_dotfiles_repo }}"
+        dest: "{{ dev_dotfiles_repo_local_destination }}"
+        version: "{{ dev_dotfiles_repo_version }}"
+        accept_hostkey: "{{ dev_dotfiles_repo_accept_hostkey }}"
 
-    - name: build directories list
+    - name: Build directories list
       ansible.builtin.find:
-        paths: ["{{ dotfiles_repo_local_destination }}"]
+        paths: ["{{ dev_dotfiles_repo_local_destination }}"]
         recurse: false
         file_type: directory
-      register: dotfiles_dirs
+      register: dev_dotfiles_dirs
 
-    - name: stow dotfiles
+    - name: Stow dotfiles
       ansible.builtin.command:
-        cmd: "stow --target='{{ dotfiles_home }}' {{ item.path | basename }} --verbose=2"
-        chdir: "{{ dotfiles_repo_local_destination }}"
-      loop: "{{ dotfiles_dirs.files }}"
-      register: result
-      changed_when: 'result.stderr is search("LINK: ")'
+        cmd: "stow --target='{{ dev_dotfiles_home }}' {{ item.path | basename }} --verbose=2"
+        chdir: "{{ dev_dotfiles_repo_local_destination }}"
+      loop: "{{ dev_dotfiles_dirs.files }}"
+      register: dev_stow_result
+      # match any stow --verbose=2 mutation, not just LINK
+      changed_when: 'dev_stow_result.stderr is search("(LINK|UNLINK|MKDIR|RMDIR|MOVE): ")'

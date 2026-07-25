@@ -1,42 +1,56 @@
 ---
-- name: install brew taps
+- name: Install brew taps
+  environment: "{{ dev_brew_env }}"
   community.general.homebrew_tap:
     name: "{{ item }}"
-  loop: "{{ brew_taps }}"
+  loop: "{{ dev_brew_taps }}"
 
-- name: install brew formulae
+- name: Install brew formulae
+  environment: "{{ dev_brew_env }}"
   community.general.homebrew:
-    name: "{{ brew_formulae }}"
+    name: "{{ dev_brew_formulae }}"
 
-- name: install brew formulae (macOS only)
+- name: Install brew formulae (macOS only)
+  environment: "{{ dev_brew_env }}"
   community.general.homebrew:
-    name: "{{ brew_formulae_darwin }}"
+    name: "{{ dev_brew_formulae_darwin }}"
   when: ansible_facts["os_family"] == 'Darwin'
 
-- name: install krew plugins
+- name: Install npm global packages
   environment:
-    PATH: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_facts['env']['HOME'] }}/.krew/bin:{{ ansible_facts['env']['PATH'] }}"
-  ignore_errors: true
+    PATH: "{{ dev_brew_path_env }}"
+  community.general.npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default(omit) }}"
+    global: true
+  loop: "{{ dev_npm_global_packages }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Install krew plugins
+  environment:
+    PATH: "{{ ansible_facts['env']['HOME'] }}/.krew/bin:{{ dev_brew_path_env }}"
   block:
-    - name: check if krew default index dir exists
-      ansible.builtin.stat:
-        path: "{{ ansible_facts['env']['HOME'] }}/.krew/index/default"
-      register: krew_index
-
-    - name: update krew index
+    # Run unconditionally: idempotent, and initializes the index so the
+    # subsequent 'krew list' doesn't fail on a fresh machine.
+    - name: Update krew index
       ansible.builtin.command: kubectl krew update
-      when: not krew_index.stat.exists
-
-    - name: get list of installed plugins
-      ansible.builtin.shell: kubectl krew list | cut -f1
-      register: installed_plugins
       changed_when: false
 
-    - name: install krew plugins
-      ansible.builtin.command: "kubectl krew install {{ krew_plugins | difference(installed_plugins.stdout_lines) | join(' ') }}"
-      when: krew_plugins | difference(installed_plugins.stdout_lines) | length > 0
+    - name: Get list of installed plugins
+      ansible.builtin.shell:
+        cmd: set -o pipefail && kubectl krew list | cut -f1
+        executable: /bin/bash
+      register: dev_installed_plugins
+      changed_when: false
 
-- name: install brew casks
+    - name: Install krew plugins
+      ansible.builtin.command: "kubectl krew install {{ dev_krew_plugins | difference(dev_installed_plugins.stdout_lines) | join(' ') }}"
+      when: dev_krew_plugins | difference(dev_installed_plugins.stdout_lines) | length > 0
+      changed_when: true
+
+- name: Install brew casks
+  environment: "{{ dev_brew_env }}"
   community.general.homebrew_cask:
-    name: "{{ brew_casks }}"
+    name: "{{ dev_brew_casks }}"
   when: ansible_facts["os_family"] == 'Darwin'

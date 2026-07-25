@@ -1,15 +1,26 @@
 ---
-dotfiles_repo: "https://github.com/pedrobarco/dotfiles.git"
-dotfiles_repo_version: master
-dotfiles_repo_accept_hostkey: false
-dotfiles_repo_local_destination: "{{ ansible_facts['env']['HOME'] }}/repos/pedrobarco/dotfiles"
-dotfiles_home: "{{ ansible_facts['env']['HOME'] }}"
+dev_dotfiles_repo: "https://github.com/pedrobarco/dotfiles.git"
+dev_dotfiles_repo_version: master
+dev_dotfiles_repo_accept_hostkey: false
+dev_dotfiles_repo_local_destination: "{{ ansible_facts['env']['HOME'] }}/repos/pedrobarco/dotfiles"
+dev_dotfiles_home: "{{ ansible_facts['env']['HOME'] }}"
 
-brew_taps:
+# PATH with Homebrew (macOS) and Linuxbrew (Debian) bins first, for tasks that
+# shell out to brew-installed binaries.
+dev_brew_path_env: "/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_facts['env']['PATH'] }}"
+
+# Environment for the homebrew tasks. NO_REQUIRE_TAP_TRUST opts out of the
+# tap-trust gate (Homebrew >= 6.0) so formulae from dev_brew_taps load.
+dev_brew_env:
+  HOMEBREW_NO_REQUIRE_TAP_TRUST: "1"
+
+# dev_brew_* and dev_krew_plugins are lists of strings; dev_npm_global_packages is a
+# list of dicts (name + optional version) because community.general.npm needs them split.
+dev_brew_taps:
   - hashicorp/tap
   - kcl-lang/tap
 
-brew_formulae:
+dev_brew_formulae:
   # core
   - bash
   - coreutils
@@ -58,10 +69,10 @@ brew_formulae:
   - kustomize
   - minikube
 
-brew_formulae_darwin:
+dev_brew_formulae_darwin:
   - telnet
 
-brew_casks:
+dev_brew_casks:
   - alt-tab
   - docker-desktop
   - font-jetbrains-mono-nerd-font
@@ -74,7 +85,12 @@ brew_casks:
   - transmission
   - wezterm
 
-krew_plugins:
+dev_krew_plugins:
   - ctx
   - ns
   - print-env
+
+dev_npm_global_packages:
+  - name: "@augmentcode/auggie"
+  - name: augment-open-proxy
+    version: 1.0.3

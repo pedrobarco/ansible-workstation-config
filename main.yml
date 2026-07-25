@@ -1,4 +1,5 @@
 ---
-- hosts: all
+- name: Provision workstation
+  hosts: all
   roles:
     - role: dev
