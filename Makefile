@@ -10,6 +10,10 @@ dry-run: install
 run: install
 	@ansible-playbook -i hosts.yml --ask-become-pass main.yml
 
+.PHONY: lint
+lint:
+	@ansible-lint
+
 .PHONY: test
 test:
 	@ansible-galaxy collection install -r roles/dev/molecule/default/collections.yml -p ~/.ansible/collections
