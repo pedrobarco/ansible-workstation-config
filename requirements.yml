@@ -2,3 +2,7 @@
 collections:
   - name: geerlingguy.mac
     version: "5.0.0"
+  # 7.5.2 (bundled with older ansible-core) treats Homebrew's "already installed
+  # and up-to-date" warning as fatal; fixed in 8.4.0 (PR #8406).
+  - name: community.general
+    version: ">=8.4.0"

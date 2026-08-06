@@ -3,12 +3,20 @@
   environment:
     PATH: "{{ dev_brew_path_env }}"
   block:
+    - name: Check if dotfiles repository already exists
+      ansible.builtin.stat:
+        path: "{{ dev_dotfiles_repo_local_destination }}/.git"
+      register: dev_dotfiles_repo_check
+
+    # Only clone on a fresh machine. Skip when the checkout exists so local
+    # modifications are preserved; the stow step below still runs to link.
     - name: Ensure dotfiles repository is cloned locally
       ansible.builtin.git:
         repo: "{{ dev_dotfiles_repo }}"
         dest: "{{ dev_dotfiles_repo_local_destination }}"
         version: "{{ dev_dotfiles_repo_version }}"
         accept_hostkey: "{{ dev_dotfiles_repo_accept_hostkey }}"
+      when: not dev_dotfiles_repo_check.stat.exists
 
     - name: Build directories list
       ansible.builtin.find:
