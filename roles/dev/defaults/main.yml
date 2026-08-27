@@ -63,7 +63,6 @@ dev_brew_formulae:
   - nmap
   - opencode
   - pre-commit
-  - tuicr
   - yq
   # media
   - mpv
