@@ -78,6 +78,7 @@ dev_brew_formulae_darwin:
 
 dev_brew_casks:
   - alt-tab
+  - cursor-cli
   - docker-desktop
   - font-jetbrains-mono-nerd-font
   - font-space-mono-nerd-font
@@ -106,6 +107,6 @@ dev_npm_global_packages:
   - name: augment-open-proxy
     version: 1.0.3
   # dotagents manages agent skills declaratively via ~/.agents/agents.toml
-  # (deployed from the dotfiles 'agents' stow package). Run `dotagents --user
-  # install` manually to reconcile skills; Ansible only installs the CLI.
+  # (deployed from the dotfiles 'agents' stow package). Ansible installs the
+  # CLI; dotagents sync runs doctor-gated after dotfiles are stowed.
   - name: "@sentry/dotagents"

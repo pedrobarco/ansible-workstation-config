@@ -19,3 +19,6 @@
 
 - name: Deploy dotfiles
   ansible.builtin.include_tasks: dotfiles.yml
+
+- name: Sync agent skills and MCP configs
+  ansible.builtin.include_tasks: packages/dotagents.yml

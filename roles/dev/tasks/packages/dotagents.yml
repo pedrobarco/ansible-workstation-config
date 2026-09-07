@@ -1,0 +1,18 @@
+---
+# doctor exits 0 when declared skills exist; install is only needed on first
+# provision or after agents.toml changes that doctor doesn't detect (e.g. new MCP
+# targets). Run `dotagents --user install` manually after those edits.
+- name: Check dotagents health
+  environment:
+    PATH: "{{ dev_brew_path_env }}"
+  ansible.builtin.command: dotagents --user doctor
+  register: dev_dotagents_doctor
+  changed_when: false
+  failed_when: false
+
+- name: Sync agent skills and MCP configs
+  environment:
+    PATH: "{{ dev_brew_path_env }}"
+  ansible.builtin.command: dotagents --user install
+  when: dev_dotagents_doctor.rc != 0
+  changed_when: true
