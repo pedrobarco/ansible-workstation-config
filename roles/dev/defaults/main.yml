@@ -97,10 +97,12 @@ dev_krew_plugins:
 
 # herdr plugins installed via `herdr plugin install <repo>`. `id` is the plugin
 # id from the repo's manifest (used for idempotency and keybindings); it usually
-# matches the repo basename but not always (e.g. herdr-worktrunk -> worktrunk).
+# matches the repo basename but not always (e.g. herdr-worktrunk -> worktrunk,
+# herdr-radar -> hhdebb.herdr-radar).
 dev_herdr_plugins:
+  - { repo: hhdebb/herdr-radar, id: hhdebb.herdr-radar }
   - { repo: paulbkim-dev/vim-herdr-navigation, id: vim-herdr-navigation }
-  - { repo: pedrobarco/herdr-worktrunk, id: worktrunk }
+  - { repo: devashish2203/herdr-worktrunk, id: worktrunk }
 
 dev_npm_global_packages:
   - name: "@augmentcode/auggie"
