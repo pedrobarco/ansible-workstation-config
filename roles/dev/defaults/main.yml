@@ -77,17 +77,15 @@ dev_brew_formulae_darwin:
   - telnet
 
 dev_brew_casks:
-  - alt-tab
   - cursor-cli
   - docker-desktop
   - font-jetbrains-mono-nerd-font
   - font-space-mono-nerd-font
   - localsend
   - postman
-  - rectangle
-  - scroll-reverser
   - stremio
   - transmission
+  - vorssaint
   - wezterm
 
 dev_krew_plugins:
